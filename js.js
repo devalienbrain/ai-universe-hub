@@ -6,6 +6,8 @@ apiAllData = await apiAllData.json();
 showData(apiAllData);
 }
 
+const dateArr = [];
+
 function showData(apiAllData){
   console.log(apiAllData.data.tools.length);
   const datas = apiAllData.data.tools;
@@ -36,8 +38,10 @@ datas.forEach(data => {
 
 apiDataContainer.appendChild(div);
 
+dateArr.push(data.published_in);
 });
 
 }
 
 loadApiData();
+console.log(dateArr);
