@@ -1,18 +1,28 @@
-const loadApiData = async() => {
-
-let apiAllData = await fetch('https://openapi.programming-hero.com/api/ai/tools');
-apiAllData = await apiAllData.json();
-
-showData(apiAllData);
+const loadApiData = async(isSort) => {
+  let apiAllData = await fetch('https://openapi.programming-hero.com/api/ai/tools');
+  apiAllData = await apiAllData.json();
+  
+  if(isSort){ 
+    sortData(apiAllData);
+  }
+  else{
+    showData(apiAllData.data.tools);
+  }
 }
 
-const dateArr = [];
+function sortData(apiAllData){
+  const sortArr = [...apiAllData.data.tools];
+  console.log(apiAllData.data.tools);
+  sortArr.sort((a, b) => new Date(b.published_in) - new Date(a.published_in));
+  console.log(sortArr);
+  showData(sortArr, true);
+}
 
-function showData(apiAllData){
-  console.log(apiAllData.data.tools.length);
-  const datas = apiAllData.data.tools;
-const apiDataContainer = document.getElementById('api-data-container');
-
+function showData(datas, willClear){
+  const apiDataContainer = document.getElementById('api-data-container');
+if(willClear){
+  apiDataContainer.textContent='';
+}
 datas.forEach(data => {
   const div = document.createElement('div');
   
@@ -37,11 +47,7 @@ datas.forEach(data => {
 </div>`;
 
 apiDataContainer.appendChild(div);
-
-dateArr.push(data.published_in);
 });
-
 }
 
-loadApiData();
-console.log(dateArr);
+loadApiData(false);
